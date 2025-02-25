@@ -19,7 +19,7 @@ permissions:
 # However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
 concurrency:
   group: "pages"
-  cancel-in-progress: false
+  cancel-in-progress:  false
 
 jobs:
   # Single deploy job since we're just deploying
@@ -43,3 +43,17 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
+- name: Checkout repository
+        uses: actions/checkout@v3  # Récupère le code source du repo
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v3  # Configure GitHub Pages
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v2
+        with:
+          path: .  # Définit le répertoire contenant les fichiers à déployer
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2  # Déploie le site sur GitHub Pages
